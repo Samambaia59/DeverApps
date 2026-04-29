@@ -1,16 +1,22 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 
-export default function Ex01() {
+export default function Ex02() {
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <Image
-          source={{ uri: "https://reactnative.dev/img/tiny_logo.png" }}
-          style={styles.image}
-        />
-        <Text style={styles.title}>wow</Text>
-        <Text>cartao legal.</Text>
+      {/* Header Fixo */}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Header Fixo</Text>
+      </View>
+
+      {/* Conteúdo flex: 1 */}
+      <View style={styles.content}>
+        <Text>pvnsdkjdbsdv</Text>
+      </View>
+
+      {/* Botão no Rodapé */}
+      <View style={styles.footerButtonContainer}>
+        <Button title="Botão Rodapé" onPress={() => alert("Pressionado!")} />
       </View>
     </View>
   );
@@ -19,32 +25,30 @@ export default function Ex01() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // flexDirection: 'column' já é o padrão no React Native
+  },
+  header: {
+    height: 60,
+    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
   },
-  card: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 12,
-    alignItems: "center",
-    width: "80%",
-    // Sombra para iOS
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    // Sombra para Android
-    elevation: 8,
-  },
-  image: {
-    width: 60,
-    height: 60,
-    marginBottom: 15,
-  },
-  title: {
+  headerText: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 5,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: "#e0f7fa",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  footerButtonContainer: {
+    position: "absolute",
+    bottom: 30, // Margem do fundo
+    left: 20,
+    right: 20,
   },
 });
