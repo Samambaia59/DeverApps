@@ -1,62 +1,55 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-  ScrollView,
-} from "react-native";
+import React, { createContext, useContext } from "react";
+import { View, Text, StyleSheet, useColorScheme } from "react-native";
 
-export default function Ex06() {
-  const { width, height } = useWindowDimensions();
+const lightColors = {
+  background: "#FFFFFF",
+  text: "#000000",
+  card: "#F0F0F0",
+};
 
-  const isLandscape = width > height;
+const darkColors = {
+  background: "#121212",
+  text: "#FFFFFF",
+  card: "#1E1E1E",
+};
 
-  const cardWidth = isLandscape ? width / 2 - 30 : width - 40;
+const ThemeContext = createContext(lightColors);
+
+export const ThemeProvider = ({ children }) => {
+  const scheme = useColorScheme();
+  const theme = scheme === "dark" ? darkColors : lightColors;
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View
-        style={[styles.grid, { flexDirection: isLandscape ? "row" : "column" }]}
-      >
-        {Array.from({ length: 6 }).map((_, index) => (
-          <View key={index} style={[styles.card, { width: cardWidth }]}>
-            <Text style={styles.cardText}>Card {index + 1}</Text>
-          </View>
-        ))}
+    <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+  );
+};
+
+export const useTheme = () => useContext(ThemeContext);
+
+const ExemploTela = () => {
+  const theme = useTheme();
+
+  return (
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <View style={[styles.card, { backgroundColor: theme.card }]}>
+        <Text style={[styles.text, { color: theme.text }]}>
+          O tema atual reage automaticamente ao sistema!
+        </Text>
       </View>
-    </ScrollView>
+    </View>
+  );
+};
+
+export default function Ex07() {
+  return (
+    <ThemeProvider>
+      <ExemploTela />
+    </ThemeProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    padding: 10,
-    alignItems: "center",
-  },
-  grid: {
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    width: "100%",
-  },
-  card: {
-    height: 150,
-    backgroundColor: "#E91E63",
-    marginVertical: 10,
-    marginHorizontal: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 12,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  cardText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  card: { padding: 20, borderRadius: 10 },
+  text: { fontSize: 16, fontWeight: "bold" },
 });
