@@ -1,40 +1,64 @@
-import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  StatusBar,
+  SafeAreaView,
+} from "react-native";
 
-export default function Ex04() {
+export default function Ex05() {
   return (
-    <View style={styles.container}>
-      <Pressable
-        style={({ pressed }) => [
-          styles.button,
-          {
-            opacity: pressed ? 0.7 : 1,
-            transform: [{ scale: pressed ? 0.97 : 1 }]
-          }
-        ]}
-        onPress={() => console.log('Pressable clicado!')}
-      >
-        <Text style={styles.buttonText}>Aperte Aqui</Text>
-      </Pressable>
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar
+        barStyle={Platform.OS === "ios" ? "dark-content" : "light-content"}
+        backgroundColor={Platform.OS === "android" ? "#4CAF50" : "#ffffff"}
+      />
+      <View style={styles.header}>
+        <Text style={styles.headerText}>ablubluble {Platform.OS}</Text>
+      </View>
+      <View style={styles.content}>
+        <Text>vadodanbi</Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: Platform.OS === "ios" ? "#fff" : "#f5f5f5",
   },
-  button: {
-    backgroundColor: '#6200EE',
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 8,
+  header: {
+    height: 60,
+    justifyContent: "center",
+    ...Platform.select({
+      ios: {
+        backgroundColor: "#ffffff",
+        alignItems: "center",
+        borderBottomWidth: 1,
+        borderBottomColor: "#ccc",
+      },
+      android: {
+        backgroundColor: "#4CAF50",
+        alignItems: "flex-start",
+        paddingLeft: 20,
+        elevation: 4,
+      },
+    }),
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  }
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    ...Platform.select({
+      ios: { color: "#000" },
+      android: { color: "#fff" },
+    }),
+  },
+  content: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
