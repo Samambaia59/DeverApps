@@ -1,55 +1,73 @@
-import React, { createContext, useContext } from "react";
-import { View, Text, StyleSheet, useColorScheme } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, Animated, StyleSheet, Button, Easing } from "react-native";
 
-const lightColors = {
-  background: "#FFFFFF",
-  text: "#000000",
-  card: "#F0F0F0",
-};
+const ProgressBar = ({ progress }) => {
+  // Animated.Value iniciando em 0
+  const animatedValue = useRef(new Animated.Value(0)).current;
 
-const darkColors = {
-  background: "#121212",
-  text: "#FFFFFF",
-  card: "#1E1E1E",
-};
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: progress,
+      duration: 600,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: false, // false porque estamos animando width e backgroundColor
+    }).start();
+  }, [progress]);
 
-const ThemeContext = createContext(lightColors);
+  // Interpolando largura (0% a 100%)
+  const widthInterpolated = animatedValue.interpolate({
+    inputRange: [0, 100],
+    outputRange: ["0%", "100%"],
+  });
 
-export const ThemeProvider = ({ children }) => {
-  const scheme = useColorScheme();
-  const theme = scheme === "dark" ? darkColors : lightColors;
-
-  return (
-    <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
-  );
-};
-
-export const useTheme = () => useContext(ThemeContext);
-
-const ExemploTela = () => {
-  const theme = useTheme();
+  // Interpolando cores (Verde -> Amarelo -> Vermelho)
+  const colorInterpolated = animatedValue.interpolate({
+    inputRange: [0, 50, 100],
+    outputRange: ["#4CAF50", "#FFEB3B", "#F44336"],
+  });
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <View style={[styles.card, { backgroundColor: theme.card }]}>
-        <Text style={[styles.text, { color: theme.text }]}>
-          O tema atual reage automaticamente ao sistema!
-        </Text>
-      </View>
+    <View style={styles.track}>
+      <Animated.View
+        style={[
+          styles.bar,
+          { width: widthInterpolated, backgroundColor: colorInterpolated },
+        ]}
+      />
     </View>
   );
 };
 
-export default function Ex07() {
+export default function Ex09() {
+  const [val, setVal] = useState(0);
+
   return (
-    <ThemeProvider>
-      <ExemploTela />
-    </ThemeProvider>
+    <View style={styles.container}>
+      <Text style={styles.label}>Progresso: {val}%</Text>
+      <ProgressBar progress={val} />
+
+      <View style={styles.buttons}>
+        <Button title="0%" onPress={() => setVal(0)} />
+        <Button title="50%" onPress={() => setVal(50)} />
+        <Button title="100%" onPress={() => setVal(100)} />
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
-  card: { padding: 20, borderRadius: 10 },
-  text: { fontSize: 16, fontWeight: "bold" },
+  container: { flex: 1, justifyContent: "center", padding: 20 },
+  label: { fontSize: 18, marginBottom: 10, textAlign: "center" },
+  track: {
+    height: 20,
+    backgroundColor: "#E0E0E0",
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  bar: { height: "100%" },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 30,
+  },
 });
