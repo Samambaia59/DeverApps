@@ -1,22 +1,29 @@
-import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function Ex02() {
+const GridCell = ({ index }) => {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.cell,
+        { backgroundColor: isActive ? "#FF5722" : "#009688" },
+      ]}
+      onPress={() => setIsActive(!isActive)}
+    >
+      <Text style={styles.cellText}>{index}</Text>
+    </TouchableOpacity>
+  );
+};
+
+export default function Ex03() {
   return (
     <View style={styles.container}>
-      {/* Header Fixo */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Header Fixo</Text>
-      </View>
-
-      {/* Conteúdo flex: 1 */}
-      <View style={styles.content}>
-        <Text>pvnsdkjdbsdv</Text>
-      </View>
-
-      {/* Botão no Rodapé */}
-      <View style={styles.footerButtonContainer}>
-        <Button title="Botão Rodapé" onPress={() => alert("Pressionado!")} />
+      <View style={styles.grid}>
+        {Array.from({ length: 9 }).map((_, i) => (
+          <GridCell key={i} index={i + 1} />
+        ))}
       </View>
     </View>
   );
@@ -25,30 +32,25 @@ export default function Ex02() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // flexDirection: 'column' já é o padrão no React Native
+    justifyContent: "center",
+    backgroundColor: "#f0f0f0",
   },
-  header: {
-    height: 60,
-    backgroundColor: "#fff",
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
+  },
+  cell: {
+    width: "33.33%",
+    aspectRatio: 1,
     justifyContent: "center",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderColor: "#ddd",
+    borderWidth: 1,
+    borderColor: "#fff",
   },
-  headerText: {
-    fontSize: 18,
+  cellText: {
+    color: "white",
+    fontSize: 24,
     fontWeight: "bold",
-  },
-  content: {
-    flex: 1,
-    backgroundColor: "#e0f7fa",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  footerButtonContainer: {
-    position: "absolute",
-    bottom: 30, // Margem do fundo
-    left: 20,
-    right: 20,
   },
 });
