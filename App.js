@@ -1,30 +1,21 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-const GridCell = ({ index }) => {
-  const [isActive, setIsActive] = useState(false);
-
-  return (
-    <TouchableOpacity
-      style={[
-        styles.cell,
-        { backgroundColor: isActive ? "#FF5722" : "#009688" },
-      ]}
-      onPress={() => setIsActive(!isActive)}
-    >
-      <Text style={styles.cellText}>{index}</Text>
-    </TouchableOpacity>
-  );
-};
-
-export default function Ex03() {
+export default function Ex04() {
   return (
     <View style={styles.container}>
-      <View style={styles.grid}>
-        {Array.from({ length: 9 }).map((_, i) => (
-          <GridCell key={i} index={i + 1} />
-        ))}
-      </View>
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          {
+            opacity: pressed ? 0.7 : 1,
+            transform: [{ scale: pressed ? 0.97 : 1 }]
+          }
+        ]}
+        onPress={() => console.log('Pressable clicado!')}
+      >
+        <Text style={styles.buttonText}>Aperte Aqui</Text>
+      </Pressable>
     </View>
   );
 }
@@ -32,25 +23,18 @@ export default function Ex03() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#f0f0f0",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    width: "100%",
+  button: {
+    backgroundColor: '#6200EE',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 8,
   },
-  cell: {
-    width: "33.33%",
-    aspectRatio: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#fff",
-  },
-  cellText: {
-    color: "white",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
 });
