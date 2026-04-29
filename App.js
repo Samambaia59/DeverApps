@@ -3,62 +3,60 @@ import {
   View,
   Text,
   StyleSheet,
-  Platform,
-  StatusBar,
-  SafeAreaView,
+  useWindowDimensions,
+  ScrollView,
 } from "react-native";
 
-export default function Ex05() {
+export default function Ex06() {
+  const { width, height } = useWindowDimensions();
+
+  const isLandscape = width > height;
+
+  const cardWidth = isLandscape ? width / 2 - 30 : width - 40;
+
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar
-        barStyle={Platform.OS === "ios" ? "dark-content" : "light-content"}
-        backgroundColor={Platform.OS === "android" ? "#4CAF50" : "#ffffff"}
-      />
-      <View style={styles.header}>
-        <Text style={styles.headerText}>ablubluble {Platform.OS}</Text>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View
+        style={[styles.grid, { flexDirection: isLandscape ? "row" : "column" }]}
+      >
+        {Array.from({ length: 6 }).map((_, index) => (
+          <View key={index} style={[styles.card, { width: cardWidth }]}>
+            <Text style={styles.cardText}>Card {index + 1}</Text>
+          </View>
+        ))}
       </View>
-      <View style={styles.content}>
-        <Text>vadodanbi</Text>
-      </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Platform.OS === "ios" ? "#fff" : "#f5f5f5",
+  scrollContainer: {
+    flexGrow: 1,
+    padding: 10,
+    alignItems: "center",
   },
-  header: {
-    height: 60,
-    justifyContent: "center",
-    ...Platform.select({
-      ios: {
-        backgroundColor: "#ffffff",
-        alignItems: "center",
-        borderBottomWidth: 1,
-        borderBottomColor: "#ccc",
-      },
-      android: {
-        backgroundColor: "#4CAF50",
-        alignItems: "flex-start",
-        paddingLeft: 20,
-        elevation: 4,
-      },
-    }),
+  grid: {
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    width: "100%",
   },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    ...Platform.select({
-      ios: { color: "#000" },
-      android: { color: "#fff" },
-    }),
-  },
-  content: {
-    flex: 1,
+  card: {
+    height: 150,
+    backgroundColor: "#E91E63",
+    marginVertical: 10,
+    marginHorizontal: 10,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 12,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  cardText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
