@@ -1,29 +1,56 @@
-{
-  "expo": {
-    "name": "React Native with Expo on CodeSandbox",
-    "slug": "react-native-codesandbox",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "bundler": "metro",
-      "favicon": "./assets/favicon.png"
-    }
-  }
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
+const GridCell = ({ index }) => {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.cell,
+        { backgroundColor: isActive ? '#FF5722' : '#009688' }
+      ]}
+      onPress={() => setIsActive(!isActive)}
+    >
+      <Text style={styles.cellText}>{index}</Text>
+    </TouchableOpacity>
+  );
+};
+
+export default function Ex03() {
+  return (
+    <View style={styles.container}>
+      <View style={styles.grid}>
+        {Array.from({ length: 9 }).map((_, i) => (
+          <GridCell key={i} index={i + 1} />
+        ))}
+      </View>
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#f0f0f0',
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap', 
+    width: '100%',
+  },
+  cell: {
+    width: '33.33%',
+    aspectRatio: 1, 
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
+  cellText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+  }
+});
