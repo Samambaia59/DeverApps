@@ -1,0 +1,101 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, Animated, StyleSheet, TouchableOpacity, Easing } from 'react-native';
+
+const ProgressBar = ({ progress }) => {
+  const animatedValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: progress,
+      duration: 600,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: false, 
+    }).start();
+  }, [progress]);
+
+  const widthInterpolated = animatedValue.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0%', '100%'],
+  });
+
+  const colorInterpolated = animatedValue.interpolate({
+    inputRange: [0, 50, 100],
+    outputRange: ['#4CAF50', '#FFEB3B', '#F44336'],
+  });
+
+  return (
+    <View style={styles.track}>
+      <Animated.View
+        style={[
+          styles.bar,
+          { width: widthInterpolated, backgroundColor: colorInterpolated },
+        ]}
+      />
+    </View>
+  );
+};
+
+export default function Ex09() {
+  const [val, setVal] = useState(0);
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.buttonsAbove}>
+        <TouchableOpacity style={styles.measureButton} onPress={() => setVal(0)}>
+          <Text style={styles.measureText}>0%</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.measureButton} onPress={() => setVal(50)}>
+          <Text style={styles.measureText}>50%</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.measureButton} onPress={() => setVal(100)}>
+          <Text style={styles.measureText}>100%</Text>
+        </TouchableOpacity>
+      </View>
+
+      <ProgressBar progress={val} />
+      <Text style={styles.statusLabel}>Progresso Atual: {val}%</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { 
+    flex: 1, 
+    justifyContent: 'center', 
+    padding: 20,
+    backgroundColor: '#fff' 
+  },
+  buttonsAbove: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    marginBottom: 15,
+    width: '100%' 
+  },
+  measureButton: {
+    backgroundColor: 'red', 
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  },
+  measureText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  track: { 
+    height: 20, 
+    width: '100%', 
+    backgroundColor: '#E0E0E0', 
+    borderRadius: 10, 
+    overflow: 'hidden' 
+  },
+  bar: { height: '100%' },
+  statusLabel: {
+    marginTop: 15,
+    textAlign: 'center',
+    color: '#666',
+    fontSize: 14,
+  }
+});
