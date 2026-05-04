@@ -1,29 +1,57 @@
-{
-  "expo": {
-    "name": "React Native with Expo on CodeSandbox",
-    "slug": "react-native-codesandbox",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "bundler": "metro",
-      "favicon": "./assets/favicon.png"
-    }
-  }
+import React from 'react';
+import { View, Text, StyleSheet, Platform, StatusBar, SafeAreaView } from 'react-native';
+
+export default function Ex05() {
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar
+        barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+        backgroundColor={Platform.OS === 'android' ? '#4CAF50' : '#ffffff'}
+      />
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Cabeçalho {Platform.OS}</Text>
+      </View>
+      <View style={styles.content}>
+        <Text>a</Text>
+      </View>
+    </SafeAreaView>
+  );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Platform.OS === 'ios' ? '#fff' : '#f5f5f5',
+  },
+  header: {
+    height: 60,
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        backgroundColor: '#ffffff',
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+      },
+      android: {
+        backgroundColor: '#4CAF50', 
+        alignItems: 'flex-start', 
+        paddingLeft: 20,
+        elevation: 4,
+      }
+    })
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    ...Platform.select({
+      ios: { color: '#000' },
+      android: { color: '#fff' }
+    })
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+});
