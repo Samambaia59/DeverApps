@@ -1,0 +1,70 @@
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+
+
+export default function Ex02() {
+  return (
+    <View style={styles.container}>
+      {/* Header Fixo */}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Header</Text>
+      </View>
+
+
+      {/* Conteúdo com flex: 1 */}
+      <View style={styles.content}>
+        <Text>a</Text>
+      </View>
+
+
+      {/* Botão Absoluto */}
+      <TouchableOpacity style={styles.fab}>
+        <Text style={styles.fabText}>+</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+   
+  },
+  header: {
+    height: 60,
+    backgroundColor: '#6200ee',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  content: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#e0e0e0',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#03dac6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+  },
+  fabText: {
+    fontSize: 24,
+    color: '#000',
+  },
+});
